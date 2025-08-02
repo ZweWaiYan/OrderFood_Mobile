@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
+import 'package:url_launcher/url_launcher.dart';
 
 class TrackingInfoCard extends StatefulWidget {
   const TrackingInfoCard({super.key});
@@ -8,6 +10,48 @@ class TrackingInfoCard extends StatefulWidget {
 }
 
 class _TrackingInfoCardState extends State<TrackingInfoCard> {
+  void makePhoneCall(String phoneNumber) async {
+    Uri phoneUri;
+
+    if (Platform.isAndroid) {
+      // Android uses 'tel:' normally
+      phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+    } else if (Platform.isIOS) {
+      // iOS also supports 'tel:', but this form ensures proper escaping
+      phoneUri = Uri.parse('tel:$phoneNumber');
+    } else {
+      throw 'Unsupported platform';
+    }
+
+    if (!await launchUrl(phoneUri, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch dialer for $phoneNumber';
+    }
+  }
+
+  void sendSMS(String phoneNumber, String message) async {
+    Uri smsUri;
+
+    if (Platform.isAndroid) {
+      // Android uses 'sms' scheme
+      smsUri = Uri(
+        scheme: 'sms',
+        path: phoneNumber,
+        queryParameters: {'body': message},
+      );
+    } else if (Platform.isIOS) {
+      // iOS uses same scheme, but syntax is more picky
+      smsUri = Uri.parse(
+        'sms:$phoneNumber&body=${Uri.encodeComponent(message)}',
+      );
+    } else {
+      throw 'Unsupported platform';
+    }
+
+    if (!await launchUrl(smsUri, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch SMS app';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,13 +74,12 @@ class _TrackingInfoCardState extends State<TrackingInfoCard> {
                   Column(
                     children: [
                       const Icon(Icons.circle, color: Colors.orange, size: 15),
-                      Container(
-                        width: 2,
-                        height: 48,
-                        color: Colors.grey,
+                      Container(width: 2, height: 48, color: Colors.grey),
+                      const Icon(
+                        Icons.location_on,
+                        color: Colors.orange,
+                        size: 20,
                       ),
-                      const Icon(Icons.location_on,
-                          color: Colors.orange, size: 20),
                     ],
                   ),
                   const SizedBox(width: 12),
@@ -164,9 +207,7 @@ class _TrackingInfoCardState extends State<TrackingInfoCard> {
                                 fontFamily: 'Roboto',
                               ),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
+                            SizedBox(height: 5),
                             Text(
                               "09123456789",
                               style: TextStyle(
@@ -205,12 +246,12 @@ class _TrackingInfoCardState extends State<TrackingInfoCard> {
                               ),
                             ),
                             onPressed: () {
-                              setState(() {});
+                              setState(() {
+                                sendSMS('09769361178', '');
+                              });
                             },
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
+                          const SizedBox(height: 5),
                           IconButton(
                             icon: Container(
                               padding: const EdgeInsets.all(6),
@@ -232,7 +273,9 @@ class _TrackingInfoCardState extends State<TrackingInfoCard> {
                               ),
                             ),
                             onPressed: () {
-                              setState(() {});
+                              setState(() {
+                                makePhoneCall('09769361178');
+                              });
                             },
                           ),
                         ],
