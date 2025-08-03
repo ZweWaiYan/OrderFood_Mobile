@@ -20,6 +20,12 @@ jobs:
           flutter-version: '3.22.1'
           cache: false
 
+      - name: Force Flutter Upgrade
+        run: flutter upgrade
+
+      - name: Check Flutter Version
+        run: flutter --version
+
       - name: Install dependencies
         run: flutter pub get
 
