@@ -1,0 +1,13 @@
+workflows:
+  ios-simulator-build:
+    name: iOS Simulator Build
+    environment:
+      flutter: stable
+      xcode: latest
+    scripts:
+      - name: Build iOS simulator app
+        script: |
+          flutter pub get
+          flutter build ios --simulator
+    artifacts:
+      - build/ios/iphonesimulator/Runner.app
