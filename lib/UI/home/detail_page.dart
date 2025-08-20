@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:deli_pos/filterData/filter_data.dart';
 
@@ -40,7 +41,9 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     int totalPrice = _quantity * _pricePerItem;
-    final String heroTag;
+    final docSnapshot =
+        ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
+    final data = docSnapshot.data() as Map<String, dynamic>;
 
     return PopScope(
       canPop: false,
@@ -71,15 +74,24 @@ class _DetailPageState extends State<DetailPage> {
               ),
 
               // Fixed section at the top
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    'assets/pizza.png',
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+              Hero(
+                tag: data['name'],
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    // child: Image.asset(
+                    //   'assets/pizza.png',
+                    //   height: 200,
+                    //   width: double.infinity,
+                    //   fit: BoxFit.cover,
+                    // ),
+                    child: Image.network(
+                      data['imageUrl'],
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -88,13 +100,20 @@ class _DetailPageState extends State<DetailPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
+                      // child: Text(
+                      //   "Burger With Meat",
+                      //   style: TextStyle(
+                      //     fontSize: 16,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
                       child: Text(
-                        "Burger With Meat",
-                        style: TextStyle(
+                        data['name'],
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -115,13 +134,21 @@ class _DetailPageState extends State<DetailPage> {
               const SizedBox(height: 3),
 
               // Price
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
+                  // child: Text(
+                  //   "10,500 Ks",
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     color: Colors.orange,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
                   child: Text(
-                    "10,500 Ks",
-                    style: TextStyle(
+                    "${data['price']} Ks",
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.orange,
                       fontWeight: FontWeight.bold,
@@ -220,10 +247,17 @@ class _DetailPageState extends State<DetailPage> {
                     ),
 
                     // Description Text
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
+                      // child: Text(
+                      //   "Burger With Meat is a typical food from our restaurant that is much in demand by many people. This is very recommended for you.",
+                      //   style: TextStyle(
+                      //     color: Color.fromARGB(255, 130, 130, 130),
+                      //     fontFamily: 'Roboto',
+                      //   ),
+                      // ),
                       child: Text(
-                        "Burger With Meat is a typical food from our restaurant that is much in demand by many people. This is very recommended for you.",
+                        data['description'],
                         style: TextStyle(
                           color: Color.fromARGB(255, 130, 130, 130),
                           fontFamily: 'Roboto',

@@ -50,7 +50,7 @@ class _ConfirmorderPageState extends State<ConfirmorderPage> {
                         const Text(
                           'Confirm Order',
                           style: TextStyle(
-                            fontSize: 17,
+                            fontSize: 30,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w600,
                           ),
@@ -226,7 +226,7 @@ class _ConfirmorderPageState extends State<ConfirmorderPage> {
                     // Expandable card
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      height: _isExpanded ? 550 : 0,
+                      height: _isExpanded ? 600 : 0,
                       curve: Curves.easeInOut,
                       child: Container(
                         padding: const EdgeInsets.all(12),
@@ -260,20 +260,17 @@ class _ConfirmorderPageState extends State<ConfirmorderPage> {
                                       fontFamily: 'Roboto',
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: SizedBox(
-                                      height: 36,
-                                      child: TextField(
-                                        style: const TextStyle(fontSize: 13),
-                                        decoration: InputDecoration(
-                                          hintText: 'eg. Su Su',
-                                          filled: true,
-                                          fillColor: Colors.white,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
+                                  SizedBox(
+                                    height: 50,
+                                    child: TextField(
+                                      style: const TextStyle(fontSize: 13),
+                                      decoration: InputDecoration(
+                                        hintText: 'eg. Su Su',
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
                                           ),
                                         ),
                                       ),
@@ -300,7 +297,7 @@ class _ConfirmorderPageState extends State<ConfirmorderPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: SizedBox(
-                                      height: 36,
+                                      height: 50,
                                       child: TextField(
                                         style: const TextStyle(fontSize: 13),
                                         decoration: InputDecoration(
@@ -337,7 +334,7 @@ class _ConfirmorderPageState extends State<ConfirmorderPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: SizedBox(
-                                      height: 36,
+                                      height: 50,
                                       child: TextField(
                                         style: const TextStyle(fontSize: 13),
                                         decoration: InputDecoration(
@@ -374,7 +371,7 @@ class _ConfirmorderPageState extends State<ConfirmorderPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Container(
-                                      height: 36,
+                                      height: 50,
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 12,
                                       ),

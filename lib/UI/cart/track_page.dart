@@ -45,12 +45,12 @@ class _TrackPageState extends State<TrackPage> {
                       TileLayer(
                         urlTemplate:
                             "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        userAgentPackageName: 'com.example.app',
+                        userAgentPackageName: 'com.deli_pos',
                       ),
                     ],
                   ),
 
-                  const TrackingFloatingBtn(),
+                  TrackingFloatingBtn(titleName: 'Tracking', backNav: "/"),
                 ],
               ),
             ),

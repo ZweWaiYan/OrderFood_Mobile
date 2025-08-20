@@ -3,7 +3,9 @@ import 'package:deli_pos/layouts/custom_gridview.dart';
 import 'package:flutter/material.dart';
 
 class ResponsiveLayout extends StatefulWidget {
-  const ResponsiveLayout({super.key});
+  final dynamic data;
+
+  const ResponsiveLayout({super.key, this.data});
 
   @override
   _ResponsiveLayoutState createState() => _ResponsiveLayoutState();
@@ -15,21 +17,15 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
     return LayoutBuilder(
       builder: (context, dimens) {
         if (dimens.maxWidth <= kMobileBreakpoint) {
-          return const CustomGridView(
-            columnRatio: 6,
-          );
+          return CustomGridView(columnRatio: 6, data: widget.data);
         } else if (dimens.maxWidth > kMobileBreakpoint &&
             dimens.maxWidth <= kTabletBreakpoint) {
-          return const CustomGridView(
-            columnRatio: 4,
-          );
+          return CustomGridView(columnRatio: 4, data: widget.data);
         } else if (dimens.maxWidth > kTabletBreakpoint &&
             dimens.maxWidth <= kDesktopBreakPoint) {
-          return const CustomGridView(
-            columnRatio: 3,
-          );
+          return CustomGridView(columnRatio: 3, data: widget.data);
         } else {
-          return const CustomGridView(columnRatio: 2);
+          return CustomGridView(columnRatio: 2, data: widget.data);
         }
       },
     );

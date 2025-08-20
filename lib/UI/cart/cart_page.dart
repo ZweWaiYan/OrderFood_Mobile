@@ -30,6 +30,7 @@ class _CartPageState extends State<CartPage> {
                         icon: const Icon(
                           Icons.arrow_circle_left_rounded,
                           color: Color(0xFFFF8C00),
+                          size: 30,
                         ),
                         onPressed: () =>
                             Navigator.pushReplacementNamed(context, '/'),

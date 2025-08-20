@@ -64,6 +64,8 @@ List<Map<String, dynamic>> cartLists = [
 
 const List<String> deliveryTypes = ['Normal', 'Fast', 'Timer', 'Special'];
 
+const List<String> languageTypes = ['English', 'မြန်မာ'];
+
 final Trackingitems = [
   {
     "name": "Hamburger",

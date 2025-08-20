@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "640860154848",
+    "project_id": "delipos-mobile",
+    "storage_bucket": "delipos-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640860154848:android:53f299c6c16ec5508a5985",
+        "android_client_info": {
+          "package_name": "com.deli_pos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVnuImWET3dw3jcjKdhxUh7P2VqsXMYds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

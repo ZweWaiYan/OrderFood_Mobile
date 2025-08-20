@@ -1,19 +1,30 @@
-import 'package:deli_pos/cart_page.dart';
+import 'package:deli_pos/UI/cart/cart_page.dart';
+import 'package:deli_pos/UI/profile/editProfile_page.dart';
+import 'package:deli_pos/UI/profile/myLocationList_page.dart';
+import 'package:deli_pos/UI/profile/myLocation_page.dart';
+import 'package:deli_pos/UI/profile/myOrder_page.dart';
+import 'package:deli_pos/UI/security/forgetPassword_page.dart';
+import 'package:deli_pos/UI/security/security_page.dart';
+import 'package:deli_pos/UI/security/setNewPassword_page.dart';
 import 'package:deli_pos/component/successfulModal.dart';
-import 'package:deli_pos/confirmOrder_page.dart';
-import 'package:deli_pos/detail_page.dart';
-import 'package:deli_pos/favourite_page.dart';
-import 'package:deli_pos/history_page.dart';
-import 'package:deli_pos/home_page.dart';
-import 'package:deli_pos/login_page.dart';
-import 'package:deli_pos/register_page.dart';
-import 'package:deli_pos/track_page.dart';
-import 'package:deli_pos/user_page.dart';
+import 'package:deli_pos/UI/cart/confirmOrder_page.dart';
+import 'package:deli_pos/UI/home/detail_page.dart';
+import 'package:deli_pos/UI/favourite/favourite_page.dart';
+import 'package:deli_pos/fileUpload_page.dart';
+import 'package:deli_pos/UI/notification/notifcation_Page.dart';
+import 'package:deli_pos/UI/home/home_page.dart';
+import 'package:deli_pos/UI/auth/login_page.dart';
+import 'package:deli_pos/UI/auth/register_page.dart';
+import 'package:deli_pos/UI/cart/track_page.dart';
+import 'package:deli_pos/UI/profile/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -32,15 +43,30 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MainScaffold(),
         '/detailPage': (context) => const DetailPage(),
+
         '/cartPage': (context) => const CartPage(),
         '/confirmOrderPage': (context) => const ConfirmorderPage(),
-        '/trackPage': (context) => const TrackPage(),
-        '/historyPage': (context) => const HistoryPage(),
         '/successfulModal': (context) => const SuccessfulModal(),
+        '/trackPage': (context) => const TrackPage(),
+
+        '/notifcationPage': (context) => const NotifcationPage(),
+
         '/favouritePage': (context) => const FavouritePage(),
-        '/userPage': (context) => const UserPage(),
+
+        '/profilePage': (context) => const ProfilePage(),
+        '/editprofilePage': (context) => const EditprofilePage(),
+        '/myOrderPage': (context) => const MyorderPage(),
+        '/myLocationPage': (context) => const MylocationPage(),
+        '/myLocationlistPage': (context) => const MylocationlistPage(),
+
+        '/securityPage': (context) => const SecurityPage(),
+        '/forgetpasswordPage': (context) => const ForgetpasswordPage(),
+        '/mainNewPasswordPage': (context) => const SetnewpasswordPage(),
+
         '/loginPage': (context) => const LoginPage(),
         '/registerPage': (context) => const RegisterPage(),
+
+        '/fileuploadPage': (context) => const FileuploadPage(),
       },
     );
   }
@@ -60,9 +86,9 @@ class _MainScaffoldState extends State<MainScaffold> {
   final List<Widget> _pages = const [
     HomePage(),
     CartPage(),
-    HistoryPage(),
+    NotifcationPage(),
     FavouritePage(),
-    UserPage(),
+    ProfilePage(),
     TrackPage(),
   ];
 

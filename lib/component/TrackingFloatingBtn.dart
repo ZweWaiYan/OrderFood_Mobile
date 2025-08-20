@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class TrackingFloatingBtn extends StatefulWidget {
-  const TrackingFloatingBtn({super.key});
+  final String backNav;
+  final String titleName;
+
+  const TrackingFloatingBtn({
+    super.key,
+    required this.titleName,
+    required this.backNav,
+  });
 
   @override
   State<TrackingFloatingBtn> createState() => _TrackingFloatingBtnState();
@@ -30,14 +37,14 @@ class _TrackingFloatingBtnState extends State<TrackingFloatingBtn> {
                         color: Color(0xFFFF8C00),
                       ),
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/');
+                        Navigator.pushReplacementNamed(context, widget.backNav);
                       },
                     ),
                     const SizedBox(width: 5),
-                    const Text(
-                      'Tracking',
+                    Text(
+                      widget.titleName,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 21,
                         fontWeight: FontWeight.bold,
                         color: Colors.black, // ensure text is visible
                       ),
