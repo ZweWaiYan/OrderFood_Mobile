@@ -21,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<HomePage> {
+  DateTime? lastBackPressed;
+
   int _selectedCategoryIndex = 0;
   final Location location = Location();
   bool _serviceEnabled = false;
@@ -34,6 +36,28 @@ class MyHomePageState extends State<HomePage> {
   final CollectionReference meals = FirebaseFirestore.instance.collection(
     'popular',
   );
+
+  Future<void> handleBackButton() async {
+    final now = DateTime.now();
+    if (lastBackPressed == null ||
+        now.difference(lastBackPressed!) > const Duration(seconds: 2)) {
+      lastBackPressed = now;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Press back again to exit'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else {
+      showExitDialog();
+    }
+  }
+
+  Future<bool> onWillPop() async {
+    await handleBackButton();
+    // Returning false prevents automatic pop
+    return false;
+  }
 
   @override
   void initState() {
@@ -106,51 +130,8 @@ class MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     DateTime? lastBackPressed;
 
-    void showExitDialog() {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Exit App'),
-          content: const Text('Are you sure you want to exit the app?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(), // Cancel
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                SystemNavigator.pop(); // ✅ Close app
-              },
-              child: const Text('Exit'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Future<void> handleBackButton() async {
-      final now = DateTime.now();
-      if (lastBackPressed == null ||
-          now.difference(lastBackPressed!) > const Duration(seconds: 2)) {
-        lastBackPressed = now;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Press back again to exit'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      } else {
-        showExitDialog();
-      }
-    }
-
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (!didPop) {
-          handleBackButton();
-        }
-      },
+    return WillPopScope(
+      onWillPop: onWillPop,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(180),
@@ -207,43 +188,12 @@ class MyHomePageState extends State<HomePage> {
                                 // ),
                               ],
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.orange,
-                                borderRadius: BorderRadius.circular(30),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.dark_mode_rounded,
+                                color: Colors.black,
                               ),
-                              //User's Location
-                              child: GestureDetector(
-                                onTap: () {
-                                  _requestLocationPermisison();
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.all(6.0),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: Colors.white,
-                                        size: 15,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: 3,
-                                          bottom: 2.5,
-                                        ),
-                                        child: Text(
-                                          'Magway...',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              onPressed: () {},
                             ),
                           ],
                         ),
@@ -604,7 +554,10 @@ class MyHomePageState extends State<HomePage> {
                                 15.0,
                                 8.0,
                               ),
-                              child: ResponsiveLayout(data: docs),
+                              child: ResponsiveLayout(
+                                data: docs,
+                                isHomePage: true,
+                              ),
                             );
                           } else {
                             // Fallback return widget (should never happen, but avoids error)
@@ -707,6 +660,26 @@ class MyHomePageState extends State<HomePage> {
         },
         staggeredTileBuilder: (index) =>
             const StaggeredTile.fit(1), // each tile = 1 column
+      ),
+    );
+  }
+
+  void showExitDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Exit App'),
+        content: const Text('Do you really want to exit?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: const Text('Exit'),
+          ),
+        ],
       ),
     );
   }

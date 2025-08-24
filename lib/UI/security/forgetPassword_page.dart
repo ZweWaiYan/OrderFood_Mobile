@@ -30,19 +30,28 @@ class _ForgetpasswordPageState extends State<ForgetpasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // PageView
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(), // prevent swipe
-                children: [forgetPasswordWidget(), checkEmailWidget()],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          Navigator.pushReplacementNamed(context, '/securityPage');
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              // PageView
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  physics:
+                      const NeverScrollableScrollPhysics(), // prevent swipe
+                  children: [forgetPasswordWidget(), checkEmailWidget()],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

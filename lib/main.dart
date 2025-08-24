@@ -1,8 +1,11 @@
 import 'package:deli_pos/UI/cart/cart_page.dart';
 import 'package:deli_pos/UI/profile/editProfile_page.dart';
+import 'package:deli_pos/UI/profile/inviteFriend_page.dart';
 import 'package:deli_pos/UI/profile/myLocationList_page.dart';
 import 'package:deli_pos/UI/profile/myLocation_page.dart';
 import 'package:deli_pos/UI/profile/myOrder_page.dart';
+import 'package:deli_pos/UI/profile/privacyPolicy_page.dart';
+import 'package:deli_pos/UI/profile/termServices_page.dart';
 import 'package:deli_pos/UI/security/forgetPassword_page.dart';
 import 'package:deli_pos/UI/security/security_page.dart';
 import 'package:deli_pos/UI/security/setNewPassword_page.dart';
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/loginPage',
-      // initialRoute: '/confirmOrderPage',
+      // initialRoute: '/favouritePage',
       theme: ThemeData(
         scaffoldBackgroundColor: const Color.fromARGB(255, 255, 234, 197),
       ),
@@ -58,6 +61,9 @@ class MyApp extends StatelessWidget {
         '/myOrderPage': (context) => const MyorderPage(),
         '/myLocationPage': (context) => const MylocationPage(),
         '/myLocationlistPage': (context) => const MylocationlistPage(),
+        '/termServicesPage': (context) => const TermServicesPage(),
+        '/privacyPolicyPage': (context) => const PrivacypolicyPage(),
+        '/inviteFriendPage': (context) => const InvitefriendPage(),
 
         '/securityPage': (context) => const SecurityPage(),
         '/forgetpasswordPage': (context) => const ForgetpasswordPage(),
@@ -105,7 +111,7 @@ class _MainScaffoldState extends State<MainScaffold> {
           final iconList = [
             Icons.home_outlined,
             Icons.shopping_cart_outlined,
-            Icons.history_toggle_off_sharp,
+            Icons.notifications_none,
             Icons.favorite_border,
             Icons.person_outline,
           ];

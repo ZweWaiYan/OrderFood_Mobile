@@ -61,11 +61,15 @@ void paymentCard(BuildContext context) {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Wave ph number - 09XXXXXXXX",
-                                    style: TextStyle(fontSize: 13)),
+                                Text(
+                                  "Wave ph number - 09XXXXXXXX",
+                                  style: TextStyle(fontSize: 13),
+                                ),
                                 SizedBox(height: 10),
-                                Text("Wave account name - Kyaw Kyaw",
-                                    style: TextStyle(fontSize: 13)),
+                                Text(
+                                  "Wave account name - Kyaw Kyaw",
+                                  style: TextStyle(fontSize: 13),
+                                ),
                                 SizedBox(height: 5),
                                 Divider(),
                                 SizedBox(height: 5),
@@ -75,16 +79,22 @@ void paymentCard(BuildContext context) {
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Amount to be paid",
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: 'Roboto')),
-                              Text("100,000 Ks",
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: 'Roboto')),
+                              Text(
+                                "Amount to be paid",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Roboto',
+                                ),
+                              ),
+                              Text(
+                                "100,000 Ks",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Roboto',
+                                ),
+                              ),
                             ],
                           ),
                           Row(
@@ -95,9 +105,10 @@ void paymentCard(BuildContext context) {
                                 child: Text(
                                   "Your Wave account phone number",
                                   style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'Roboto'),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Roboto',
+                                  ),
                                 ),
                               ),
                               Padding(
@@ -117,7 +128,7 @@ void paymentCard(BuildContext context) {
                                     ),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                           Row(
@@ -128,9 +139,10 @@ void paymentCard(BuildContext context) {
                                 child: Text(
                                   "Your Wave account name",
                                   style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'Roboto'),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Roboto',
+                                  ),
                                 ),
                               ),
                               Padding(
@@ -150,7 +162,7 @@ void paymentCard(BuildContext context) {
                                     ),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
 
@@ -165,9 +177,10 @@ void paymentCard(BuildContext context) {
                                   child: Text(
                                     "Deposit confirmation screenshot",
                                     style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: 'Roboto'),
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Roboto',
+                                    ),
                                   ),
                                 ),
                                 GestureDetector(
@@ -180,16 +193,24 @@ void paymentCard(BuildContext context) {
                                       color: Colors.white,
                                       border: Border.all(
                                         color: const Color.fromARGB(
-                                            255, 168, 168, 151),
+                                          255,
+                                          168,
+                                          168,
+                                          151,
+                                        ),
                                         width: 2.0,
                                       ),
                                     ),
                                     child: pickedImage == null
-                                        ? const Icon(Icons.add,
-                                            color: Colors.orange, size: 30)
+                                        ? const Icon(
+                                            Icons.add,
+                                            color: Colors.orange,
+                                            size: 30,
+                                          )
                                         : ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
                                             child: Image.file(
                                               pickedImage!,
                                               fit: BoxFit.cover,
@@ -213,18 +234,21 @@ void paymentCard(BuildContext context) {
                                 barrierDismissible: false,
                                 builder: (context) => Center(
                                   child: SizedBox(
-                                    width: MediaQuery.of(context).size.width *
+                                    width:
+                                        MediaQuery.of(context).size.width *
                                         0.9, // 90% width
                                     height: 300,
                                     child: Card(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
                                       elevation: 8,
                                       child: const Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 24, vertical: 32),
+                                            horizontal: 24,
+                                            vertical: 32,
+                                          ),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
@@ -233,25 +257,23 @@ void paymentCard(BuildContext context) {
                                               Text(
                                                 'Please wait...',
                                                 style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w700),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
+                                              SizedBox(height: 10),
                                               Text(
                                                 'Payment in Progress',
                                                 style: TextStyle(
-                                                    fontSize: 13,
-                                                    color: Color.fromARGB(
-                                                      255,
-                                                      116,
-                                                      115,
-                                                      115,
-                                                    ),
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                  fontSize: 13,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    116,
+                                                    115,
+                                                    115,
+                                                  ),
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -261,39 +283,31 @@ void paymentCard(BuildContext context) {
                                   ),
                                 ),
                               );
-
-                              Future.delayed(
-                                const Duration(seconds: 1),
-                                () {
-                                  Navigator.of(context)
-                                      .pop(); // Close loading dialog
-                                  // Navigator.of(context)
-                                  //     .pop(); // Close previous page/dialog
-
-                                  Navigator.pushNamed(
-                                      context, '/successfulModal');
-                                },
-                              );
                             },
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 20, left: 10, right: 10, bottom: 10),
-                              child: Container(
-                                width: 150,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 12),
-                                decoration: BoxDecoration(
-                                  color: Colors.orange,
-                                  borderRadius: BorderRadius.circular(30),
+                              padding: const EdgeInsets.only(top: 10),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 14,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      30,
+                                    ), // rounded edges
+                                  ),
                                 ),
-                                child: const Center(
-                                  child: Text(
-                                    'Continue',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                    ),
+                                child: const Text(
+                                  'Continue',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ),

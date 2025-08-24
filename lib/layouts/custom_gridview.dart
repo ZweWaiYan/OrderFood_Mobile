@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class CustomGridView extends StatelessWidget {
-  const CustomGridView({super.key, required this.columnRatio, this.data});
+  const CustomGridView({
+    super.key,
+    required this.columnRatio,
+    this.data,
+    required this.isHomePage,
+  });
 
   final int columnRatio;
+  final bool isHomePage;
   final List<QueryDocumentSnapshot>? data;
 
   @override
@@ -17,8 +23,12 @@ class CustomGridView extends StatelessWidget {
     return StaggeredGridView.countBuilder(
       crossAxisCount: 12,
       itemCount: data!.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: isHomePage ? true : false,
+      physics: isHomePage
+          ? const NeverScrollableScrollPhysics()
+          : const AlwaysScrollableScrollPhysics(),
+      // shrinkWrap: true,
+      // physics: const NeverScrollableScrollPhysics(),
       mainAxisSpacing: 12,
       crossAxisSpacing: 12,
       itemBuilder: (context, index) {

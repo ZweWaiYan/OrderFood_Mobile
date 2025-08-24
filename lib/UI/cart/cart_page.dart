@@ -10,17 +10,31 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  bool promoInput = false;
   double deleteButtonWidth = 30;
+
+  final _promoCodeController = TextEditingController();
+
+  @override
+  void dispose() {
+    _promoCodeController.dispose(); // always dispose controllers
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          Navigator.pushNamed(context, '/');
+        }
+      },
       child: Scaffold(
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 35, 8, 0),
+              padding: const EdgeInsets.fromLTRB(8, 36, 8, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -104,54 +118,99 @@ class _CartPageState extends State<CartPage> {
             ),
 
             //Promo code
-            Padding(
-              padding: const EdgeInsets.all(11.0),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset(0, 3),
-                      blurRadius: 7,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 25.0),
-                      child: Text(
-                        "Promo code",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 25.0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 28,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(12),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(11, 0, 11, 0),
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 3),
+                          blurRadius: 7,
                         ),
-                        child: const Text(
-                          "Apply",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 25.0),
+                          child: Text(
+                            "Promo code",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (promoInput) {
+                                // If currently showing, hide and clear input
+                                _promoCodeController.clear();
+                                promoInput = false;
+                              } else {
+                                // Show input
+                                promoInput = true;
+                              }
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 25.0),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 28,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                promoInput ? "Unapply" : "Apply",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Show input field only if showInput is true
+                if (promoInput)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 11),
+                    child: TextFormField(
+                      controller: _promoCodeController,
+                      decoration: InputDecoration(
+                        hintText: 'Enter promo code',
+                        filled: true,
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 255, 206, 132),
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.orange,
+                            width: 2,
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+              ],
             ),
 
             //Subtotal & total

@@ -11,6 +11,15 @@ class MylocationlistPage extends StatefulWidget {
 class _MylocationlistPageState extends State<MylocationlistPage> {
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)?.settings.arguments;
+    Map<dynamic, dynamic> data = {};
+
+    if (args != null && args is Map) {
+      data = args;
+    }
+
+    final fromWhere = data['fromWhere'] ?? '/defaultRoute';
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -27,7 +36,7 @@ class _MylocationlistPageState extends State<MylocationlistPage> {
                       size: 30,
                     ),
                     onPressed: () =>
-                        Navigator.pushReplacementNamed(context, '/profilePage'),
+                        Navigator.pushReplacementNamed(context, fromWhere),
                   ),
                   const SizedBox(width: 5),
                   const Text(
@@ -42,6 +51,36 @@ class _MylocationlistPageState extends State<MylocationlistPage> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Mylocationlistcard(),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(11.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, fromWhere);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'New location',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

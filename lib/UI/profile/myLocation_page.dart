@@ -20,6 +20,15 @@ class _MylocationPageState extends State<MylocationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)?.settings.arguments;
+    Map<dynamic, dynamic> data = {};
+
+    if (args != null && args is Map) {
+      data = args;
+    }
+
+    final fromWhere = data['fromWhere'] ?? '/defaultRoute';
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(
@@ -46,7 +55,7 @@ class _MylocationPageState extends State<MylocationPage> {
 
                 TrackingFloatingBtn(
                   titleName: 'My Location',
-                  backNav: '/profilePage',
+                  backNav: fromWhere,
                 ),
               ],
             ),

@@ -47,6 +47,11 @@ class _DetailPageState extends State<DetailPage> {
 
     return PopScope(
       canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          Navigator.pushNamed(context, '/');
+        }
+      },
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.fromLTRB(10, 35, 10, 0),
@@ -160,10 +165,11 @@ class _DetailPageState extends State<DetailPage> {
               const SizedBox(height: 7),
 
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                 child: Container(
+                  height: 45,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 229, 197),
+                    color: const Color.fromARGB(193, 255, 222, 179),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
@@ -175,17 +181,20 @@ class _DetailPageState extends State<DetailPage> {
                           children: [
                             Image.asset(
                               'assets/icons/bag.png',
-                              width: 16,
-                              height: 16,
+                              width: 20,
+                              height: 20,
                               color: Colors.orange,
                             ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              "7000+ Order",
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Color.fromARGB(255, 130, 130, 130),
-                                fontWeight: FontWeight.bold,
+                            const SizedBox(width: 7),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 3),
+                              child: const Text(
+                                "7000+ Order",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(255, 130, 130, 130),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
@@ -195,13 +204,13 @@ class _DetailPageState extends State<DetailPage> {
                             Icon(
                               Icons.access_time_outlined,
                               color: Colors.orange,
-                              size: 16,
+                              size: 22,
                             ),
                             SizedBox(width: 5),
                             Text(
                               "20 - 30",
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 13,
                                 color: Color.fromARGB(255, 130, 130, 130),
                                 fontWeight: FontWeight.bold,
                               ),
@@ -210,12 +219,12 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                         const Row(
                           children: [
-                            Icon(Icons.star, color: Colors.orange, size: 16),
+                            Icon(Icons.star, color: Colors.orange, size: 22),
                             SizedBox(width: 5),
                             Text(
                               "4.5",
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 13,
                                 color: Color.fromARGB(255, 130, 130, 130),
                                 fontWeight: FontWeight.bold,
                               ),
@@ -233,15 +242,12 @@ class _DetailPageState extends State<DetailPage> {
                   children: [
                     // Description Title
                     const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
+                      padding: EdgeInsets.fromLTRB(13, 0, 13, 10),
                       child: Text(
                         "Description",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -265,7 +271,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
 
                     // Product Title
                     const Padding(
@@ -277,7 +283,7 @@ class _DetailPageState extends State<DetailPage> {
                         "Product Description",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -525,36 +531,41 @@ class _DetailPageState extends State<DetailPage> {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 12,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: const Center(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.shopping_cart_outlined,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    'Add to Cart',
-                                    style: TextStyle(
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/cartPage');
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: const Center(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.shopping_cart_outlined,
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
+                                      size: 16,
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Add to Cart',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
