@@ -6,23 +6,29 @@ class CustomGridView extends StatelessWidget {
   const CustomGridView({
     super.key,
     required this.columnRatio,
-    this.data,
+    required this.data,
     required this.isHomePage,
   });
 
   final int columnRatio;
   final bool isHomePage;
-  final List<QueryDocumentSnapshot>? data;
+  // final List<QueryDocumentSnapshot>? data;
+  final List<Map<String, dynamic>> data;
 
   @override
   Widget build(BuildContext context) {
-    if (data == null || data!.isEmpty) {
+    // if (data == null || data!.isEmpty) {
+    //   return const Center(child: Text('No Data available'));
+    // }
+
+    if (data.isEmpty) {
       return const Center(child: Text('No Data available'));
     }
 
     return StaggeredGridView.countBuilder(
       crossAxisCount: 12,
-      itemCount: data!.length,
+      // itemCount: data!.length,
+      itemCount: data.length,
       shrinkWrap: isHomePage ? true : false,
       physics: isHomePage
           ? const NeverScrollableScrollPhysics()
@@ -32,7 +38,8 @@ class CustomGridView extends StatelessWidget {
       mainAxisSpacing: 12,
       crossAxisSpacing: 12,
       itemBuilder: (context, index) {
-        final item = data![index].data() as Map<String, dynamic>;
+        // final item = data![index].data() as Map<String, dynamic>;
+        final item = data[index];
         return Container(
           decoration: BoxDecoration(
             color: Colors.white,

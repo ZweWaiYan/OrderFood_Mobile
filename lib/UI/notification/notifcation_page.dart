@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deli_pos/component/notiCard.dart';
+import 'package:deli_pos/filterData/local_data.dart';
 import 'package:flutter/material.dart';
 
 class NotifcationPage extends StatefulWidget {
@@ -223,73 +224,121 @@ class _NotifcationPageState extends State<NotifcationPage> {
                 ),
               ),
 
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('notification')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const CircularProgressIndicator();
-                  }
+              //online db
+              // StreamBuilder<QuerySnapshot>(
+              //   stream: FirebaseFirestore.instance
+              //       .collection('notification')
+              //       .snapshots(),
+              //   builder: (context, snapshot) {
+              //     if (!snapshot.hasData) {
+              //       return const CircularProgressIndicator();
+              //     }
 
-                  // Use the separate function
-                  final grouped = groupNotificationsByDate(snapshot.data!.docs);
+              //     // Use the separate function
+              //     final grouped = groupNotificationsByDate(snapshot.data!.docs);
 
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
-                      child: ListView(
-                        children: grouped.entries.map((entry) {
-                          final dateTitle = entry.key;
-                          final notifications = entry.value;
+              //     return Expanded(
+              //       child: Padding(
+              //         padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+              //         child: ListView(
+              //           children: grouped.entries.map((entry) {
+              //             final dateTitle = entry.key;
+              //             final notifications = entry.value;
 
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Date header
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0,
-                                ),
-                                child: Text(
-                                  dateTitle,
-                                  style: const TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.orange,
-                                  ),
-                                ),
-                              ),
-                              // Notification cards
-                              ...notifications.map((notification) {
-                                return Container(
-                                  margin: const EdgeInsets.only(bottom: 8),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/successfulModal',
-                                      );
-                                    },
-                                    // borderRadius: BorderRadius.circular(8),
-                                    child: NotiCard(
-                                      isLoading: true,
-                                      orderTitle: notification['orderTitle'],
-                                      orderType: notification['orderType'],
-                                      orderDes: notification['orderDes'],
-                                      orderDate: notification['orderDate'],
-                                      orderTime: notification['orderTime'],
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ],
-                          );
-                        }).toList(),
+              //             return Column(
+              //               crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 // Date header
+              //                 Padding(
+              //                   padding: const EdgeInsets.symmetric(
+              //                     vertical: 8.0,
+              //                   ),
+              //                   child: Text(
+              //                     dateTitle,
+              //                     style: const TextStyle(
+              //                       fontSize: 17,
+              //                       fontWeight: FontWeight.bold,
+              //                       color: Colors.orange,
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 // Notification cards
+              //                 ...notifications.map((notification) {
+              //                   return Container(
+              //                     margin: const EdgeInsets.only(bottom: 8),
+              //                     child: InkWell(
+              //                       onTap: () {
+              //                         Navigator.pushNamed(
+              //                           context,
+              //                           '/successfulModal',
+              //                         );
+              //                       },
+              //                       // borderRadius: BorderRadius.circular(8),
+              //                       child: NotiCard(
+              //                         isLoading: true,
+              //                         orderTitle: notification['orderTitle'],
+              //                         orderType: notification['orderType'],
+              //                         orderDes: notification['orderDes'],
+              //                         orderDate: notification['orderDate'],
+              //                         orderTime: notification['orderTime'],
+              //                       ),
+              //                     ),
+              //                   );
+              //                 }),
+              //               ],
+              //             );
+              //           }).toList(),
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
+
+              //offline db
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                  child: ListView(
+                    children: [
+                      // Date header
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          "Today",
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange,
+                          ),
+                        ),
                       ),
-                    ),
-                  );
-                },
+
+                      // Notification cards
+                      ...notification.map((noti) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/successfulModal',
+                                arguments: noti, // pass notification data
+                              );
+                            },
+                            child: NotiCard(
+                              isLoading: false,
+                              orderTitle: noti['orderTitle'],
+                              orderType: noti['orderType'],
+                              orderDes: noti['orderDes'],
+                              orderDate: noti['orderDate'],
+                              orderTime: noti['orderTime'],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

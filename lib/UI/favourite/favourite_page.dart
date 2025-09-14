@@ -1,5 +1,6 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deli_pos/filterData/local_data.dart';
 import 'package:deli_pos/layouts/responsiveLayout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -16,12 +17,8 @@ class _FavouritePageState extends State<FavouritePage> {
   @override
   Widget build(BuildContext context) {
     bool _myBackInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-      // This handles:
-      // ✅ Android system back
-      // ✅ Android predictive back (swipe)
-      // ✅ iOS swipe back
       Navigator.pushReplacementNamed(context, '/homepage');
-      return true; // stop default behavior
+      return true;
     }
 
     @override
@@ -121,32 +118,44 @@ class _FavouritePageState extends State<FavouritePage> {
               ),
 
               // 🔑 Expanded makes only this part scroll
+              //online db
+              // Expanded(
+              //   child: StreamBuilder<QuerySnapshot>(
+              //     stream: FirebaseFirestore.instance
+              //         .collection('meals')
+              //         .snapshots(),
+              //     builder: (context, snapshot) {
+              //       if (snapshot.connectionState == ConnectionState.waiting) {
+              //         return _buildCategoryShimmerList();
+              //       }
+              //       if (snapshot.hasError) {
+              //         return const Center(child: Text('Something went wrong'));
+              //       }
+              //       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              //         return const Center(child: Text('No data found'));
+              //       }
+
+              //       final docs = snapshot.data!.docs;
+
+              //       return Padding(
+              //         padding: const EdgeInsets.symmetric(
+              //           horizontal: 15.0,
+              //           vertical: 8.0,
+              //         ),
+              //         child: ResponsiveLayout(data: docs, isHomePage: false),
+              //       );
+              //     },
+              //   ),
+              // ),
+
+              //local Database
               Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('meals')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return _buildCategoryShimmerList();
-                    }
-                    if (snapshot.hasError) {
-                      return const Center(child: Text('Something went wrong'));
-                    }
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return const Center(child: Text('No data found'));
-                    }
-
-                    final docs = snapshot.data!.docs;
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15.0,
-                        vertical: 8.0,
-                      ),
-                      child: ResponsiveLayout(data: docs, isHomePage: false),
-                    );
-                  },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                    vertical: 8.0,
+                  ),
+                  child: ResponsiveLayout(data: meals, isHomePage: false),
                 ),
               ),
             ],

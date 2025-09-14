@@ -41,9 +41,13 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     int totalPrice = _quantity * _pricePerItem;
-    final docSnapshot =
-        ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
-    final data = docSnapshot.data() as Map<String, dynamic>;
+    // final docSnapshot =
+    //     ModalRoute.of(context)!.settings.arguments as QueryDocumentSnapshot;
+    // final data = docSnapshot.data() as Map<String, dynamic>;
+
+    // Get the data passed from previous page
+    final Map<String, dynamic> data =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     return PopScope(
       canPop: false,

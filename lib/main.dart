@@ -1,4 +1,7 @@
 import 'package:deli_pos/UI/cart/cart_page.dart';
+import 'package:deli_pos/UI/home/all_page.dart';
+import 'package:deli_pos/UI/home/menu_page.dart';
+import 'package:deli_pos/UI/home/nearest_page.dart';
 import 'package:deli_pos/UI/profile/editProfile_page.dart';
 import 'package:deli_pos/UI/profile/inviteFriend_page.dart';
 import 'package:deli_pos/UI/profile/myLocationList_page.dart';
@@ -46,6 +49,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MainScaffold(),
         '/detailPage': (context) => const DetailPage(),
+        '/allPage': (context) => const AllPage(),
+        '/nearestPage': (context) => const NearestPage(),
+        '/menuPage': (context) => const MenuPage(),
 
         '/cartPage': (context) => const CartPage(),
         '/confirmOrderPage': (context) => const ConfirmorderPage(),

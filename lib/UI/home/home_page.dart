@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:deli_pos/filterData/local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:deli_pos/component/popularCard.dart';
 import 'package:deli_pos/layouts/responsiveLayout.dart';
@@ -29,13 +30,12 @@ class MyHomePageState extends State<HomePage> {
   PermissionStatus? _permissionGranted;
   // LocationData? _locationData;
 
+  int _selectedIndex = 0;
+  final List<String> _tabs = ["All", "Nearest", "New Shop"];
+
   List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
-
-  final CollectionReference meals = FirebaseFirestore.instance.collection(
-    'popular',
-  );
 
   Future<void> handleBackButton() async {
     final now = DateTime.now();
@@ -276,301 +276,303 @@ class MyHomePageState extends State<HomePage> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Column(
-              children: [
-                /// Popular Items section that disappears cleanly
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  switchInCurve: Curves.easeIn,
-                  switchOutCurve: Curves.easeOut,
-                  child:
-                      (_selectedCategoryIndex == -1 ||
-                          _selectedCategoryIndex == 0)
-                      ? Column(
-                          key: const ValueKey("popular"),
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 8,
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            /// Card (scrolls away)
+            SliverToBoxAdapter(
+              child:
+                  /// Popular Items
+                  Column(
+                    key: const ValueKey("popular"),
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
+                        ),
+                        height: 130,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Image.asset(
+                                'assets/homePromoImg.jpg',
+                                fit: BoxFit.cover,
                               ),
-                              height: 130,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(30),
-                                child: Stack(
-                                  fit: StackFit.expand,
+                              // Semi-transparent black layer (optional for readability)
+                              Container(color: Colors.black.withOpacity(0.3)),
+                              // Text overlay
+                              const Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Image.asset(
-                                      'assets/homePromoImg.jpg',
-                                      fit: BoxFit.cover,
+                                    Text(
+                                      'Free Combo',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'DM Sans',
+                                      ),
                                     ),
-                                    // Semi-transparent black layer (optional for readability)
-                                    Container(
-                                      color: Colors.black.withOpacity(0.3),
+                                    Text(
+                                      'Burger + Coca-Cola',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'DM Sans',
+                                      ),
                                     ),
-                                    // Text overlay
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Free Combo',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'DM Sans',
-                                            ),
-                                          ),
-                                          Text(
-                                            'Burger + Coca-Cola',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: 'DM Sans',
-                                            ),
-                                          ),
-                                          Text(
-                                            'for new user',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: 'DM Sans',
-                                            ),
-                                          ),
-                                        ],
+                                    Text(
+                                      'for new user',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'DM Sans',
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.0,
-                                vertical: 8.0,
-                              ),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Popular Items",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            // SizedBox(
-                            //   height: 210,
-                            //   child: ListView.builder(
-                            //     scrollDirection: Axis.horizontal,
-                            //     padding: const EdgeInsets.symmetric(
-                            //       horizontal: 8,
-                            //     ),
-                            //     itemCount: 10,
-                            //     itemBuilder: (context, index) =>
-                            //         GestureDetector(
-                            //           onTap: () {
-                            //             Navigator.pushReplacementNamed(
-                            //               context,
-                            //               '/detailPage',
-                            //             );
-                            //           },
-                            //           child: const PopularCard(),
-                            //         ),
-                            //   ),
-                            // ),
-                            // Text(
-                            //   _connectionStatus.toString(),
-                            //   style: Theme.of(context).textTheme.headlineSmall,
-                            // ),
-                            SizedBox(
-                              height: 210,
-                              child:
-                                  // _connectionStatus.toString() !=
-                                  //     '[ConnectivityResult.none]'
-                                  // ?
-                                  StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection('popular')
-                                        .snapshots(
-                                          // includeMetadataChanges: true,
-                                        ),
-                                    builder: (context, snapshot) {
-                                      // final populars = snapshot.data!.docs;
-
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return _buildPopularShimmerList(); // show shimmer while loading
-                                      } else if (!snapshot.hasData ||
-                                          snapshot.data!.docs.isEmpty) {
-                                        return const Center(
-                                          child: Text("No popular items found"),
-                                        );
-                                      } else {
-                                        return ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                          ),
-                                          itemCount: snapshot.data!.docs.length,
-                                          itemBuilder: (context, index) {
-                                            final popular =
-                                                snapshot.data!.docs[index];
-                                            return GestureDetector(
-                                              onTap: () {
-                                                Navigator.pushReplacementNamed(
-                                                  context,
-                                                  '/detailPage',
-                                                  arguments: popular,
-                                                );
-                                              },
-                                              child: PopularCard(
-                                                name: popular['name'],
-                                                imageUrl: popular['imageUrl'],
-                                                price: popular['price'],
-                                                description:
-                                                    popular['description'],
-                                                isLoading: false,
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      }
-                                    },
-                                  ),
-                              // : _buildPopularShimmerList(),
-                            ),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
-                ),
-
-                /// Category selector + responsive layout
-                AnimatedSlide(
-                  offset: _selectedCategoryIndex != -1
-                      ? const Offset(0, 0)
-                      : const Offset(0, 0),
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.easeInOut,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 5),
-                      SizedBox(
-                        height: 50,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: categoryLists.length,
-                          itemBuilder: (context, index) {
-                            final isSelected = _selectedCategoryIndex == index;
-
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedCategoryIndex =
-                                      _selectedCategoryIndex == index
-                                      ? -1
-                                      : index;
-                                });
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 8,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 3,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? Colors.orange
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(24),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 3,
-                                      offset: Offset(0, 1),
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    categoryLists[index],
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                      color: isSelected
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                            ],
+                          ),
                         ),
                       ),
-                      SizedBox(height: 5),
-
-                      // const Padding(
-                      //   padding: EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
-                      //   child: ResponsiveLayout(),
-                      // ),
-                      // _connectionStatus.toString() !=
-                      //         '[ConnectivityResult.none]'
-                      //     ?
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('meals')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return _buildCategoryShimmerList();
-                          } else if (!snapshot.hasData ||
-                              snapshot.data!.docs.isEmpty) {
-                            return const Center(child: Text('No data found'));
-                          } else if (snapshot.hasData) {
-                            final docs = snapshot.data!.docs;
-
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                15.0,
-                                8.0,
-                                15.0,
-                                8.0,
-                              ),
-                              child: ResponsiveLayout(
-                                data: docs,
-                                isHomePage: true,
-                              ),
-                            );
-                          } else {
-                            // Fallback return widget (should never happen, but avoids error)
-                            return _buildCategoryShimmerList();
-                          }
-                        },
-                      ),
-                      // : _buildCategoryShimmerList(),
                     ],
                   ),
-                ),
-              ],
             ),
+
+            /// Sticky Tabs
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _TabBarDelegate(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                  child: Row(
+                    children: List.generate(_tabs.length, (index) {
+                      final isSelected = _selectedIndex == index;
+
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ChoiceChip(
+                            label: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _tabs[index],
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.orange,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            selected: isSelected,
+                            showCheckmark: false,
+                            selectedColor: Colors.orange,
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: const BorderSide(color: Colors.orange),
+                            ),
+                            onSelected: (_) {
+                              setState(() {
+                                _selectedIndex = index;
+                              });
+
+                              switch (index) {
+                                case 0:
+                                  Navigator.pushNamed(context, "/allPage");
+                                  break;
+                                case 1:
+                                  Navigator.pushNamed(context, "/nearestPage");
+                                  break;
+                              }
+                            },
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+            ),
+          ],
+
+          body: ListView(
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+                child: Text(
+                  "Popular Items",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              //with Online Db
+              // SizedBox(
+              //   height: 210,
+              //   child: StreamBuilder<QuerySnapshot>(
+              //     stream: FirebaseFirestore.instance
+              //         .collection('popular')
+              //         .snapshots(),
+              //     builder: (context, snapshot) {
+              //       if (snapshot.connectionState == ConnectionState.waiting) {
+              //         return _buildPopularShimmerList(); // show shimmer while loading
+              //       } else if (!snapshot.hasData ||
+              //           snapshot.data!.docs.isEmpty) {
+              //         return const Center(
+              //           child: Text("No popular items found"),
+              //         );
+              //       } else {
+              //         return ListView.builder(
+              //           scrollDirection: Axis.horizontal,
+              //           padding: const EdgeInsets.symmetric(horizontal: 8),
+              //           itemCount: snapshot.data!.docs.length,
+              //           itemBuilder: (context, index) {
+              //             final popular = snapshot.data!.docs[index];
+              //             return GestureDetector(
+              //               onTap: () {
+              //                 Navigator.pushReplacementNamed(
+              //                   context,
+              //                   '/detailPage',
+              //                   arguments: popular,
+              //                 );
+              //               },
+              //               child: PopularCard(
+              //                 name: popular['name'],
+              //                 imageUrl: popular['imageUrl'],
+              //                 price: popular['price'],
+              //                 description: popular['description'],
+              //                 isLoading: false,
+              //               ),
+              //             );
+              //           },
+              //         );
+              //       }
+              //     },
+              //   ),
+              // ),
+              //Local DB
+              SizedBox(
+                height: 210,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  itemCount: popular.length,
+                  itemBuilder: (context, index) {
+                    final item = popular[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          '/detailPage',
+                          arguments: item,
+                        );
+                      },
+                      child: PopularCard(
+                        name: item['name'],
+                        imageUrl: item['imageUrl'],
+                        price: item['price'],
+                        description: item['description'],
+                        isLoading: false,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 5),
+
+              const SizedBox(height: 10),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Text(
+                  "Season Foods",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              //Online DB
+              // SizedBox(
+              //   height: 210,
+              //   child: StreamBuilder<QuerySnapshot>(
+              //     stream: FirebaseFirestore.instance
+              //         .collection('popular')
+              //         .snapshots(),
+              //     builder: (context, snapshot) {
+              //       if (snapshot.connectionState == ConnectionState.waiting) {
+              //         return _buildPopularShimmerList(); // show shimmer while loading
+              //       } else if (!snapshot.hasData ||
+              //           snapshot.data!.docs.isEmpty) {
+              //         return const Center(
+              //           child: Text("No popular items found"),
+              //         );
+              //       } else {
+              //         return ListView.builder(
+              //           scrollDirection: Axis.horizontal,
+              //           padding: const EdgeInsets.symmetric(horizontal: 8),
+              //           itemCount: snapshot.data!.docs.length,
+              //           itemBuilder: (context, index) {
+              //             final popular = snapshot.data!.docs[index];
+              //             return GestureDetector(
+              //               onTap: () {
+              //                 Navigator.pushReplacementNamed(
+              //                   context,
+              //                   '/detailPage',
+              //                   arguments: popular,
+              //                 );
+              //               },
+              //               child: PopularCard(
+              //                 name: popular['name'],
+              //                 imageUrl: popular['imageUrl'],
+              //                 price: popular['price'],
+              //                 description: popular['description'],
+              //                 isLoading: false,
+              //               ),
+              //             );
+              //           },
+              //         );
+              //       }
+              //     },
+              //   ),
+              //   // : _buildPopularShimmerList(),
+              // ),
+              //Local DB
+              SizedBox(
+                height: 210,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  itemCount: meals.length,
+                  itemBuilder: (context, index) {
+                    final item = meals[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          '/detailPage',
+                          arguments: item,
+                        );
+                      },
+                      child: PopularCard(
+                        name: item['name'],
+                        imageUrl: item['imageUrl'],
+                        price: item['price'],
+                        description: item['description'],
+                        isLoading: false,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -682,5 +684,33 @@ class MyHomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+}
+
+class _TabBarDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+
+  _TabBarDelegate(this.child);
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Container(
+      color: Color.fromARGB(255, 255, 234, 197), // optional background
+      child: child,
+    );
+  }
+
+  @override
+  double get maxExtent => 55; // Adjust height to fit your ChoiceChips
+  @override
+  double get minExtent => 55;
+
+  @override
+  bool shouldRebuild(_TabBarDelegate oldDelegate) {
+    return oldDelegate.child != child;
   }
 }
